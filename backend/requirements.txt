@@ -1,0 +1,10 @@
+emoji
+fastapi
+uvicorn[standard]
+torch
+transformers
+huggingface-hub
+pydantic
+pydantic-settings
+python-dotenv
+scikit-learn
