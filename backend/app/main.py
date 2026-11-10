@@ -304,7 +304,7 @@ def predict_metadata_stage2(
 # METADATA FULL ENDPOINTS
 # =========================================
 @app.post(
-        "/predict/metadata-full",
+        "/api/v1/predict/metadata-full",
         tags=["Metadata-Full"],
         summary="Full Metadata Prediction"
         )

@@ -1,111 +1,160 @@
-:root {
-  --text: #6b6375;
-  --text-h: #08060d;
-  --bg: #fff;
-  --border: #e5e4e7;
-  --code-bg: #f4f3ec;
-  --accent: #aa3bff;
-  --accent-bg: rgba(170, 59, 255, 0.1);
-  --accent-border: rgba(170, 59, 255, 0.5);
-  --social-bg: rgba(244, 243, 236, 0.5);
-  --shadow:
-    rgba(0, 0, 0, 0.1) 0 10px 15px -3px, rgba(0, 0, 0, 0.05) 0 4px 6px -2px;
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-  --sans: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --heading: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --mono: ui-monospace, Consolas, monospace;
-
-  font: 18px/145% var(--sans);
-  letter-spacing: 0.18px;
-  color-scheme: light dark;
-  color: var(--text);
-  background: var(--bg);
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-
-  @media (max-width: 1024px) {
-    font-size: 16px;
-  }
-}
-
-@media (prefers-color-scheme: dark) {
+/*
+ * Theme tokens. Values are HSL channels ("H S% L%") so Tailwind can apply
+ * opacity modifiers. Components never use raw colors — only these tokens.
+ */
+@layer base {
   :root {
-    --text: #9ca3af;
-    --text-h: #f3f4f6;
-    --bg: #16171d;
-    --border: #2e303a;
-    --code-bg: #1f2028;
-    --accent: #c084fc;
-    --accent-bg: rgba(192, 132, 252, 0.15);
-    --accent-border: rgba(192, 132, 252, 0.5);
-    --social-bg: rgba(47, 48, 58, 0.5);
-    --shadow:
-      rgba(0, 0, 0, 0.4) 0 10px 15px -3px, rgba(0, 0, 0, 0.25) 0 4px 6px -2px;
+    --background: 40 25% 98%;
+    --foreground: 228 30% 10%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 228 30% 10%;
+
+    --primary: 248 72% 56%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 235 18% 95%;
+    --secondary-foreground: 228 30% 14%;
+
+    --muted: 235 16% 94%;
+    --muted-foreground: 228 10% 40%;
+
+    --accent: 248 85% 96%;
+    --accent-foreground: 248 60% 42%;
+
+    --destructive: 357 75% 50%;
+    --destructive-foreground: 0 0% 100%;
+
+    --success: 154 62% 32%;
+    --success-foreground: 0 0% 100%;
+
+    --warning: 36 92% 44%;
+    --warning-foreground: 0 0% 100%;
+
+    --border: 232 16% 90%;
+    --input: 232 16% 86%;
+    --ring: 248 72% 56%;
+
+    --shadow: 228 40% 20%;
+    --radius: 0.75rem;
+
+    /* Code block syntax colors */
+    --code-bg: 228 28% 97%;
+    --code-key: 248 60% 45%;
+    --code-string: 154 62% 30%;
+    --code-number: 28 90% 40%;
+    --code-literal: 330 65% 45%;
+    --code-punct: 228 10% 45%;
   }
 
-  #social .button-icon {
-    filter: invert(1) brightness(2);
+  .dark {
+    --background: 228 26% 7%;
+    --foreground: 220 20% 94%;
+
+    --card: 228 22% 10%;
+    --card-foreground: 220 20% 94%;
+
+    --primary: 248 92% 72%;
+    --primary-foreground: 228 30% 8%;
+
+    --secondary: 228 18% 15%;
+    --secondary-foreground: 220 20% 92%;
+
+    --muted: 228 18% 14%;
+    --muted-foreground: 220 12% 64%;
+
+    --accent: 248 38% 19%;
+    --accent-foreground: 248 92% 84%;
+
+    --destructive: 357 80% 64%;
+    --destructive-foreground: 228 30% 8%;
+
+    --success: 154 58% 52%;
+    --success-foreground: 228 30% 8%;
+
+    --warning: 38 92% 58%;
+    --warning-foreground: 228 30% 8%;
+
+    --border: 228 16% 19%;
+    --input: 228 16% 24%;
+    --ring: 248 92% 72%;
+
+    --shadow: 0 0% 0%;
+
+    --code-bg: 228 24% 8%;
+    --code-key: 248 90% 80%;
+    --code-string: 154 55% 62%;
+    --code-number: 32 92% 66%;
+    --code-literal: 330 80% 74%;
+    --code-punct: 220 10% 60%;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-background font-sans text-foreground antialiased;
+    font-feature-settings: 'cv11', 'ss01';
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply font-display tracking-tight;
+  }
+
+  ::selection {
+    @apply bg-primary/20;
+  }
+
+  :focus-visible {
+    @apply outline-none ring-2 ring-ring ring-offset-2 ring-offset-background;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
   }
 }
 
-#root {
-  width: 1126px;
-  max-width: 100%;
-  margin: 0 auto;
-  text-align: center;
-  border-inline: 1px solid var(--border);
-  min-height: 100svh;
-  display: flex;
-  flex-direction: column;
-  box-sizing: border-box;
-}
-
-body {
-  margin: 0;
-}
-
-h1,
-h2 {
-  font-family: var(--heading);
-  font-weight: 500;
-  color: var(--text-h);
-}
-
-h1 {
-  font-size: 56px;
-  letter-spacing: -1.68px;
-  margin: 32px 0;
-  @media (max-width: 1024px) {
-    font-size: 36px;
-    margin: 20px 0;
+@layer components {
+  /* Very subtle dot grid used behind page headers */
+  .bg-dots {
+    background-image: radial-gradient(hsl(var(--foreground) / 0.07) 1px, transparent 1px);
+    background-size: 22px 22px;
   }
-}
-h2 {
-  font-size: 24px;
-  line-height: 118%;
-  letter-spacing: -0.24px;
-  margin: 0 0 8px;
-  @media (max-width: 1024px) {
-    font-size: 20px;
+
+  .tok-key {
+    color: hsl(var(--code-key));
   }
-}
-p {
-  margin: 0;
-}
-
-code,
-.counter {
-  font-family: var(--mono);
-  display: inline-flex;
-  border-radius: 4px;
-  color: var(--text-h);
-}
-
-code {
-  font-size: 15px;
-  line-height: 135%;
-  padding: 4px 8px;
-  background: var(--code-bg);
+  .tok-string {
+    color: hsl(var(--code-string));
+  }
+  .tok-number {
+    color: hsl(var(--code-number));
+  }
+  .tok-literal {
+    color: hsl(var(--code-literal));
+  }
+  .tok-punct {
+    color: hsl(var(--code-punct));
+  }
 }
