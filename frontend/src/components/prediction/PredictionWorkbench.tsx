@@ -1,5 +1,5 @@
 import { useMemo, useRef, useState, type FormEvent } from 'react';
-import { Eraser, Sparkles, Wand2 } from 'lucide-react';
+import { Eraser, RotateCcw, Sparkles, Wand2 } from 'lucide-react';
 import { MAX_TEXT_LENGTH } from '@/config/api';
 import { getFieldsForMode } from '@/config/metadata';
 import { EXAMPLE_TEXTS, type ModelCategory } from '@/config/modes';
@@ -141,6 +141,16 @@ export function PredictionWorkbench() {
             {loading ? 'Analyzing…' : 'Predict toxicity'}
           </Button>
         </form>
+
+        <div className="py-4">
+          <div className="flex flex-wrap items-center justify-between gap-2">
+            <Button variant="secondary" size="sm" onClick={handleNewPrediction}>
+              <RotateCcw className="h-3.5 w-3.5" aria-hidden />
+              New prediction
+            </Button>
+          </div>
+        </div>
+
       </Card>
 
       <div className="col-span-full w-full min-w-0 grid grid-cols-1 md:grid-cols-2 gap-6 items-stretch">

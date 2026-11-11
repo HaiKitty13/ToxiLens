@@ -78,11 +78,6 @@ class ModelService:
             raise ValueError(f"Mode tidak dikenal: {mode}")
 
         if model_family == "indobertweet":
-            # if mode == "metadata":
-            #     raise ValueError(
-            #         "Metadata domicile belum tersedia untuk IndoBERTweet."
-            #     )
-
             return f"{mode}_s{stage}"
 
         return f"nusabert_{mode}_s{stage}"

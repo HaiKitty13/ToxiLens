@@ -205,26 +205,6 @@ function SuccessState({
           Categories scoring at or above {formatPercent(CATEGORY_HIGHLIGHT_THRESHOLD, 0)} are marked as detected.
         </p>
       </div>
-
-      {/* Footer actions */}
-      <div className="border-t px-6 py-4">
-        <div className="flex flex-wrap items-center justify-between gap-2">
-          <button
-            type="button"
-            onClick={() => setShowRaw((v) => !v)}
-            aria-expanded={showRaw}
-            className="inline-flex items-center gap-1.5 text-sm text-muted-foreground transition-colors hover:text-foreground"
-          >
-            <ChevronDown className={cn('h-4 w-4 transition-transform', showRaw && 'rotate-180')} aria-hidden />
-            Raw API response
-          </button>
-          <Button variant="secondary" size="sm" onClick={onNewPrediction}>
-            <RotateCcw className="h-3.5 w-3.5" aria-hidden />
-            New prediction
-          </Button>
-        </div>
-        {showRaw && <CodeBlock className="mt-3 animate-fade-in" code={JSON.stringify(result.raw, null, 2)} title="response.json" />}
-      </div>
     </div>
   );
 }
