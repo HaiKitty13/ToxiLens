@@ -17,8 +17,6 @@ class ModelService:
         self.models = {}
         self.tokenizers = {}
 
-        # Label Stage 2
-        # Urutannya HARUS sama dengan urutan label saat training.
         self.stage2_labels = [
             "insults",
             "identity_attack",

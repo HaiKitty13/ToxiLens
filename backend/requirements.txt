@@ -8,3 +8,5 @@ pydantic
 pydantic-settings
 python-dotenv
 scikit-learn
+pandas
+datasets

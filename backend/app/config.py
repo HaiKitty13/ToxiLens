@@ -58,6 +58,10 @@ class Settings(BaseSettings):
     # API
     FRONTEND_URL: str = Field(...)
 
+    # Datasets
+    REPO: str = Field(...)
+    BASE_URL: str = Field(...)
+
     @property
     def MODEL_IDS(self) -> dict:
         return {
