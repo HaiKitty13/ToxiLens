@@ -1,4 +1,3 @@
-
 import torch
 
 from transformers import (
@@ -8,7 +7,6 @@ from transformers import (
 
 from app.config import settings
 from app.utils import prepare_input
-
 
 class ModelService:
 
@@ -57,11 +55,37 @@ class ModelService:
 
         return model_ids[model_key]
     
-    def _get_model_key(self, mode: str, stage: int):
-        if mode not in ["text_only", "metadata", "metadata_full"]:
-            raise ValueError(f"Mode key tidak dikenal: {mode}")
+    def _get_model_key(
+        self,
+        mode: str,
+        stage: int,
+        model_family: str = "indobertweet"
+    ):
+        valid_families = ["indobertweet", "nusabert"]
 
-        return f"{mode}_s{stage}"
+        valid_modes = [
+            "text_only",
+            "metadata_full",
+            "metadata"
+        ]
+
+        if model_family not in valid_families:
+            raise ValueError(
+                f"Model family tidak dikenal: {model_family}"
+            )
+
+        if mode not in valid_modes:
+            raise ValueError(f"Mode tidak dikenal: {mode}")
+
+        if model_family == "indobertweet":
+            if mode == "metadata":
+                raise ValueError(
+                    "Metadata domicile belum tersedia untuk IndoBERTweet."
+                )
+
+            return f"{mode}_s{stage}"
+
+        return f"nusabert_{mode}_s{stage}"
 
     def load_model(self, model_key: str):
         """
@@ -204,7 +228,8 @@ class ModelService:
         self,
         text: str,
         mode: str,
-        metadata=None
+        metadata=None,
+        model_family: str = "indobertweet"
     ):
         """
         Stage 1:
@@ -212,7 +237,11 @@ class ModelService:
         non-toxic vs toxic.
         """
 
-        model_key = self._get_model_key(mode, 1)
+        model_key = self._get_model_key(
+            mode,
+            1,
+            model_family
+        )
 
         model, tokenizer = self.load_model(model_key)
 
@@ -275,7 +304,8 @@ class ModelService:
         self,
         text: str,
         mode: str,
-        metadata=None
+        metadata=None,
+        model_family: str = "indobertweet"
     ):
         """
         Stage 2:
@@ -283,7 +313,11 @@ class ModelService:
         Menggunakan sigmoid untuk setiap kategori.
         """
 
-        model_key = self._get_model_key(mode, 2)
+        model_key = self._get_model_key(
+            mode,
+            2,
+            model_family
+        )
 
         model, tokenizer = self.load_model(model_key)
 
@@ -330,17 +364,29 @@ class ModelService:
         self,
         text: str,
         mode: str,
-        metadata=None
+        metadata=None,
+        model_family: str = "indobertweet"
     ):
-        """
-        Full pipeline:
-        Stage 1 -> Stage 2 jika toxic.
-        """
 
-        if mode not in ["text_only", "metadata", "metadata_full"]:
-            raise ValueError(f"Mode predict tidak dikenal: {mode}")
+        valid_families = ["indobertweet", "nusabert"]
 
-        if mode == "metadata" and metadata is None:
+        valid_modes = [
+            "text_only",
+            "metadata",
+            "metadata_full"
+        ]
+
+        if model_family not in valid_families:
+            raise ValueError(
+                f"Model family tidak dikenal: {model_family}"
+            )
+
+        if mode not in valid_modes:
+            raise ValueError(
+                f"Mode predict tidak dikenal: {mode}"
+            )
+
+        if mode in ["metadata", "metadata_full"] and metadata is None:
             raise ValueError(
                 "Metadata wajib diisi untuk mode metadata."
             )
@@ -349,7 +395,8 @@ class ModelService:
         stage1_result = self.predict_stage1(
             text=text,
             mode=mode,
-            metadata=metadata
+            metadata=metadata,
+            model_family=model_family
         )
 
         # Jika non-toxic, Stage 2 tidak dijalankan
@@ -363,14 +410,14 @@ class ModelService:
         stage2_result = self.predict_stage2(
             text=text,
             mode=mode,
-            metadata=metadata
+            metadata=metadata,
+            model_family=model_family
         )
 
         return {
             "stage1": stage1_result,
             "stage2": stage2_result
         }
-
 
 # Satu instance service untuk digunakan oleh API
 model_service = ModelService()

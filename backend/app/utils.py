@@ -5,7 +5,6 @@ import emoji
 
 from app.schemas import AnnotatorMetadata
 
-
 EMOJI_LANG = "id"
 
 EMOTICON_DICT = {

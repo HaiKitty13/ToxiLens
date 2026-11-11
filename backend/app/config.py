@@ -27,6 +27,7 @@ class Settings(BaseSettings):
     # Hugging Face
     HF_TOKEN: str = Field(...)
 
+    #Indobertweet
     # Stage 1
     MODEL_METADATA_S1: str = Field(...)
     MODEL_TEXT_ONLY_S1: str = Field(...)
@@ -36,6 +37,17 @@ class Settings(BaseSettings):
     MODEL_METADATA_S2: str = Field(...)
     MODEL_TEXT_ONLY_S2: str = Field(...)
     MODEL_METADATA_FULL_S2: str = Field(...)
+
+    # Nusabert
+    # Stage 1
+    NUSABERT_METADATA_S1: str = Field(...)
+    NUSABERT_TEXT_ONLY_S1: str = Field(...)
+    NUSABERT_METADATA_FULL_S1: str = Field(...)
+
+    # Stage 2
+    NUSABERT_METADATA_S2: str = Field(...)
+    NUSABERT_TEXT_ONLY_S2: str = Field(...)
+    NUSABERT_METADATA_FULL_S2: str = Field(...)
 
     # Model configuration
     MAX_LENGTH: int = Field(...)
@@ -55,6 +67,12 @@ class Settings(BaseSettings):
             "metadata_s2": self.MODEL_METADATA_S2,
             "text_only_s2": self.MODEL_TEXT_ONLY_S2,
             "metadata_full_s2": self.MODEL_METADATA_FULL_S2,
+            "nusabert_metadata_s1": self.NUSABERT_METADATA_S1,
+            "nusabert_text_only_s1": self.NUSABERT_TEXT_ONLY_S1,
+            "nusabert_metadata_full_s1": self.NUSABERT_METADATA_FULL_S1,
+            "nusabert_metadata_s2": self.NUSABERT_METADATA_S2,
+            "nusabert_text_only_s2": self.NUSABERT_TEXT_ONLY_S2,
+            "nusabert_metadata_full_s2": self.NUSABERT_METADATA_FULL_S2
         }
 
 

@@ -22,7 +22,6 @@ app = FastAPI(
     debug=settings.DEBUG
 )
 
-
 # =========================================
 # CORS
 # =========================================
@@ -329,3 +328,59 @@ def predict_metadata_full(
             status_code=500,
             detail=str(e)
         )
+    
+
+# NUSABERT ENDPOINTS
+@app.post(
+        "/api/v1/nusabert/predict/text-only",
+        tags=["Nusabert"],
+        summary="Text-only Prediction")
+def predict_nusabert_text_only(
+    request: TextOnlyPredictionRequest
+):
+    try:
+        return model_service.predict(
+            text=request.text,
+            mode="text_only",
+            model_family="nusabert"
+        )
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
+
+
+@app.post(
+        "/api/v1/nusabert/predict/metadata-full",
+        tags=["Nusabert"],
+        summary="Full Metadata Prediction"
+        )
+def predict_nusabert_metadata(
+    request: MetadataFullPredictionRequest
+):
+    try:
+        return model_service.predict(
+            text=request.text,
+            mode="metadata_full",
+            metadata=request.metadata,
+            model_family="nusabert"
+        )
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
+
+
+@app.post(
+        "/api/v1/nusabert/predict/metadata-domicile",
+        tags=["Nusabert"],
+        summary="Metadata Domicile Prediction"
+        )
+def predict_nusabert_metadata_domicile(
+    request: MetadataPredictionRequest
+):
+    try:
+        return model_service.predict(
+            text=request.text,
+            mode="metadata",
+            metadata=request.metadata,
+            model_family="nusabert"
+        )
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
