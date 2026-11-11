@@ -11,7 +11,6 @@ interface ModelSelectorProps {
   disabled?: boolean;
 }
 
-/** Two-level model picker: category (text-only / metadata) → variant (full / domicile-only). */
 export function ModelSelector({ category, onCategoryChange, metadataVariant, onVariantChange }: ModelSelectorProps) {
   const activeMode = MODES[category === 'text-only' ? 'text-only' : metadataVariant];
 

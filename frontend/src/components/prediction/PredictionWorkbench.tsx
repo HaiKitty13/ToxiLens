@@ -21,8 +21,10 @@ export function PredictionWorkbench() {
   const [submitted, setSubmitted] = useState(false);
   const exampleIndex = useRef(0);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const indobertweet = usePrediction('indobertweet');
+  const nusabert = usePrediction('nusabert');
 
-  const { status, result, error, mode: resultMode, submit, reset } = usePrediction();
+  // const { status, result, error, mode: resultMode, submit, reset } = usePrediction();
 
   const mode: PredictionMode = category === 'text-only' ? 'text-only' : metadataVariant;
   const fields = useMemo(() => getFieldsForMode(mode), [mode]);
@@ -32,15 +34,19 @@ export function PredictionWorkbench() {
   const showTextError = (submitted || overLimit) && errors.text;
   const visibleMetadataErrors = submitted ? errors.metadata : {};
 
-  const run = () => {
+  const run = async () => {
     setSubmitted(true);
+
     if (hasErrors(errors)) {
       if (errors.text) textareaRef.current?.focus();
       return;
     }
-    void submit(mode, text.trim(), metadata);
-  };
 
+    await Promise.all([
+      indobertweet.submit(mode, text.trim(), metadata),
+      nusabert.submit(mode, text.trim(), metadata),
+    ]);
+  };
   const handleSubmit = (event: FormEvent) => {
     event.preventDefault();
     run();
@@ -59,7 +65,8 @@ export function PredictionWorkbench() {
   };
 
   const handleNewPrediction = () => {
-    reset();
+    indobertweet.reset();
+    nusabert.reset();
     setText('');
     setSubmitted(false);
     textareaRef.current?.focus();
@@ -139,24 +146,24 @@ export function PredictionWorkbench() {
       <div className="col-span-full w-full min-w-0 grid grid-cols-1 md:grid-cols-2 gap-6 items-stretch">
         <div className="w-full min-w-0">
           <ResultPanel
-            status={status}
-            result={result}
-            error={error}
-            mode={resultMode}
-            family={'indobertweet'}
-            onRetry={run}
+            status={indobertweet.status}
+            result={indobertweet.result}
+            error={indobertweet.error}
+            mode={indobertweet.mode}
+            family="indobertweet"
+            onRetry={() => indobertweet.submit(mode, text.trim(), metadata)}
             onNewPrediction={handleNewPrediction}
           />
         </div>
 
         <div className="w-full min-w-0">
           <ResultPanel
-            status={status}
-            result={result}
-            error={error}
-            mode={resultMode}
-            family={'nusabert'}
-            onRetry={run}
+            status={nusabert.status}
+            result={nusabert.result}
+            error={nusabert.error}
+            mode={nusabert.mode}
+            family="nusabert"
+            onRetry={() => nusabert.submit(mode, text.trim(), metadata)}
             onNewPrediction={handleNewPrediction}
           />
         </div>
