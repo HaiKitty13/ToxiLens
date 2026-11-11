@@ -3,6 +3,7 @@ import { FileText, Layers, MapPin } from 'lucide-react';
 import type { PredictionMode } from '@/types/api';
 
 export type ModelCategory = 'text-only' | 'metadata';
+export type ModelFamily = 'nusabert' | 'indobertweet';
 
 export interface ModeConfig {
   id: PredictionMode;
@@ -42,8 +43,11 @@ export const MODES: Record<PredictionMode, ModeConfig> = {
 };
 
 export const METADATA_VARIANTS: PredictionMode[] = ['metadata-full', 'metadata-domicile'];
+export const MODEL_FAMILIES: ModelFamily[] = [
+  'indobertweet',
+  'nusabert',
+];
 
-/** Example sentences for the "Example" button (cycled in order). */
 export const EXAMPLE_TEXTS: string[] = [
   'Dasar bodoh, kamu tidak pantas berada di sini!',
   'Terima kasih atas penjelasannya, sangat membantu sekali.',

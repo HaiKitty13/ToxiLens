@@ -57,11 +57,7 @@ export class ApiError extends Error {
 export function toApiError(error: unknown): ApiError {
   if (error instanceof ApiError) return error;
   return new ApiError('network', error instanceof Error ? error.message : 'Unknown error');
-}
-
-/* -------------------------------------------------------------------------- */
-/* Low-level request helper                                                   */
-/* -------------------------------------------------------------------------- */
+}                                                  
 
 interface RequestOptions {
   body?: unknown;

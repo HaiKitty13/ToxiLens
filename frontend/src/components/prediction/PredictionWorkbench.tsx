@@ -8,7 +8,7 @@ import { Card } from '@/components/ui/Card';
 import { usePrediction } from '@/hooks/usePrediction';
 import { cn } from '@/lib/utils';
 import { hasErrors, validatePrediction } from '@/lib/validation';
-import type { MetadataValues, PredictionMode } from '@/types/api';
+import type { MetadataValues, PredictionMode, ModelFamily } from '@/types/api';
 import { MetadataFields } from './MetadataFields';
 import { ModelSelector } from './ModelSelector';
 import { ResultPanel } from './ResultPanel';
@@ -29,7 +29,6 @@ export function PredictionWorkbench() {
   const errors = useMemo(() => validatePrediction(mode, text, metadata), [mode, text, metadata]);
   const loading = status === 'loading';
   const overLimit = text.length > MAX_TEXT_LENGTH;
-  // Show validation messages only after the first attempt (or when the limit is exceeded).
   const showTextError = (submitted || overLimit) && errors.text;
   const visibleMetadataErrors = submitted ? errors.metadata : {};
 
@@ -67,8 +66,8 @@ export function PredictionWorkbench() {
   };
 
   return (
-    <div className="grid gap-6 lg:grid-cols-5 lg:items-start">
-      <Card className="p-6 lg:col-span-3">
+    <div className="grid gap-6 lg:items-start">
+      <Card className="p-6">
         <form onSubmit={handleSubmit} className="space-y-6" noValidate>
           <ModelSelector
             category={category}
@@ -137,15 +136,30 @@ export function PredictionWorkbench() {
         </form>
       </Card>
 
-      <div className="lg:sticky lg:top-24 lg:col-span-2">
-        <ResultPanel
-          status={status}
-          result={result}
-          error={error}
-          mode={resultMode}
-          onRetry={run}
-          onNewPrediction={handleNewPrediction}
-        />
+      <div className="col-span-full w-full min-w-0 grid grid-cols-1 md:grid-cols-2 gap-6 items-stretch">
+        <div className="w-full min-w-0">
+          <ResultPanel
+            status={status}
+            result={result}
+            error={error}
+            mode={resultMode}
+            family={'indobertweet'}
+            onRetry={run}
+            onNewPrediction={handleNewPrediction}
+          />
+        </div>
+
+        <div className="w-full min-w-0">
+          <ResultPanel
+            status={status}
+            result={result}
+            error={error}
+            mode={resultMode}
+            family={'nusabert'}
+            onRetry={run}
+            onNewPrediction={handleNewPrediction}
+          />
+        </div>
       </div>
     </div>
   );

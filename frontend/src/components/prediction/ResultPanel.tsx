@@ -8,7 +8,7 @@ import { CodeBlock } from '@/components/ui/CodeBlock';
 import { Progress } from '@/components/ui/Progress';
 import { cn, formatPercent } from '@/lib/utils';
 import type { ApiError } from '@/services/api';
-import type { PredictionMode, PredictionResult, RequestStatus } from '@/types/api';
+import type { ModelFamily, PredictionMode, PredictionResult, RequestStatus } from '@/types/api';
 import { CATEGORY_HIGHLIGHT_THRESHOLD } from '@/config/api';
 
 interface ResultPanelProps {
@@ -16,17 +16,18 @@ interface ResultPanelProps {
   result: PredictionResult | null;
   error: ApiError | null;
   mode: PredictionMode | null;
+  family: ModelFamily | null;
   onRetry: () => void;
   onNewPrediction: () => void;
 }
 
-export function ResultPanel({ status, result, error, mode, onRetry, onNewPrediction }: ResultPanelProps) {
+export function ResultPanel({ status, result, error, mode, family, onRetry, onNewPrediction }: ResultPanelProps) {
   return (
-    <Card className="min-h-[360px] overflow-hidden" aria-live="polite">
+    <Card className="w-full max-w-none min-w-0 h-full min-h-[360px] overflow-hidden" aria-live="polite">
       {status === 'idle' && <EmptyState />}
       {status === 'loading' && <LoadingState />}
       {status === 'error' && error && <ErrorState error={error} onRetry={onRetry} />}
-      {status === 'success' && result && <SuccessState result={result} mode={mode} onNewPrediction={onNewPrediction} />}
+      {status === 'success' && result && <SuccessState result={result} mode={mode} family={family} onNewPrediction={onNewPrediction} />}
     </Card>
   );
 }
@@ -82,10 +83,12 @@ function ErrorState({ error, onRetry }: { error: ApiError; onRetry: () => void }
 function SuccessState({
   result,
   mode,
+  family,
   onNewPrediction,
 }: {
   result: PredictionResult;
   mode: PredictionMode | null;
+  family: ModelFamily | null;
   onNewPrediction: () => void;
 }) {
   const [showRaw, setShowRaw] = useState(false);
@@ -96,11 +99,30 @@ function SuccessState({
   return (
     <div className="animate-fade-up">
       {/* Verdict */}
-      <div className={cn('border-b p-6', toxic ? 'bg-destructive/5' : 'bg-success/5')}>
-        <div className="mb-4 flex items-center justify-between gap-2">
-          <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Stage 1 · Classification</span>
-          {mode && <Badge tone="outline">{MODES[mode].shortLabel}</Badge>}
+        <div className="border-b px-6 pt-6 pb-4">
+          <div className="flex items-start justify-between gap-3">
+            <div className="min-w-0">
+              <h3 className="font-display text-2xl font-bold tracking-tight text-foreground">
+                {family ? `${family.toUpperCase()} · ` : ''}
+              </h3>
+              <p className="mt-1 text-xs font-medium text-muted-foreground">
+                Stage 1 · Classification
+              </p>
+            </div>
+
+            {mode && (
+              <Badge tone="outline">
+                {MODES[mode].shortLabel}
+              </Badge>
+            )}
+          </div>
         </div>
+
+        {/* Verdict */}
+        <div className={cn(
+          'p-6',
+          toxic ? 'bg-destructive/5' : 'bg-success/5'
+        )}>
         <div className="flex items-center gap-4">
           <span
             className={cn(
