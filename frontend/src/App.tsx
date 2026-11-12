@@ -14,7 +14,7 @@ export default function App() {
         <Route path="model" element={<ModelDescription />} />
         <Route path="dataset" element={<DatasetDescription />} />
         <Route path="research" element={<ResearchDescription />} />
-        <Route path="api" element={<ApiDocumentation />} />
+        {/* <Route path="api" element={<ApiDocumentation />} /> */}
         <Route path="*" element={<Navigate to="/" replace />} />
       </Route>
     </Routes>

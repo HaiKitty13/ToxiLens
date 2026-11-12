@@ -1,98 +1,269 @@
-import type { ChartDatum } from '@/components/charts/ChartCard';
 
-/**
- * Centralized dataset information.
- *
- * Every `null` below is a PLACEHOLDER — no figures have been provided yet, so none are invented.
- * Fill them in here and the Dataset page (cards, charts, tables) updates automatically.
- */
+export type MethodologyStep = {
+  title: string;
+  description: string;
+};
 
-export interface DatasetStat {
+export type DatasetStat = {
   id: string;
   label: string;
-  /** null = not provided yet */
   value: number | string | null;
   hint: string;
-}
+};
+
+export const DATASET_OVERVIEW = `
+This research uses IndoDiscourse, an Indonesian discourse dataset introduced by Susanto et al. (2025). The dataset was developed to support research on toxicity, hate speech, and polarization in Indonesian online communication by incorporating annotator demographic information.
+
+The dataset consists of Indonesian-language texts collected from social media platforms and online news discussions. These texts represent naturally occurring public discourse across various social, cultural, and political contexts.
+
+IndoDiscourse consists of two main components: the Main Table, which contains discourse texts and their annotation labels, and the Annotator Table, which stores demographic and background information about the annotators involved in the labeling process.
+
+In this research, IndoDiscourse serves as the primary dataset for developing a toxicity classification model that incorporates both textual information and annotator metadata.
+`;
 
 export const DATASET_STATS: DatasetStat[] = [
-  { id: 'samples', label: 'Total samples', value: null, hint: 'Number of annotated texts' },
-  { id: 'toxic', label: 'Toxic samples', value: null, hint: 'Texts labeled as toxic' },
-  { id: 'non-toxic', label: 'Non-toxic samples', value: null, hint: 'Texts labeled as non-toxic' },
-  { id: 'annotators', label: 'Annotators', value: null, hint: 'Number of contributing annotators' },
-  { id: 'language', label: 'Language', value: 'Indonesian', hint: 'Language of the texts' },
-  { id: 'source', label: 'Text source', value: null, hint: 'Where the texts were collected from' },
+  {
+    id: "original-samples",
+    label: "Original Samples",
+    value: 28477,
+    hint: "Total text samples in the original IndoDiscourse dataset",
+  },
+  {
+    id: "original-annotators",
+    label: "Original Annotators",
+    value: 29,
+    hint: "Annotators in the original dataset",
+  },
+  {
+    id: "collection-period",
+    label: "Collection Period",
+    value: "Sep 2023 – Jan 2024",
+    hint: "Original dataset collection period",
+  },
+  {
+    id: "dataset-components",
+    label: "Dataset Components",
+    value: 2,
+    hint: "Main Table and Annotator Table",
+  },
+  {
+    id: "classification-stages",
+    label: "Classification Stages",
+    value: 2,
+    hint: "Binary and multi-label classification",
+  },
+  {
+    id: "toxicity-categories",
+    label: "Toxicity Categories",
+    value: 6,
+    hint: "Categories used in Stage 2 classification",
+  },
 ];
 
-export const DATASET_OVERVIEW: string | null = null; // e.g. "A corpus of Indonesian social media texts annotated for toxicity..."
+// Populate these arrays using the final EDA results.
+// Empty arrays are used to avoid displaying fabricated statistics.
 
-export const LABEL_DISTRIBUTION: ChartDatum[] = [
-  { name: 'Toxic', value: null },
-  { name: 'Non-Toxic', value: null },
+export const LABEL_DISTRIBUTION: {
+  name: string;
+  value: number;
+}[] = [];
+
+export const CATEGORY_DISTRIBUTION: {
+  name: string;
+  value: number;
+}[] = [];
+
+export const TOXICITY_CATEGORIES = [
+  {
+    key: "insults",
+    label: "Insults",
+    description:
+      "Expressions intended to insult, demean, ridicule, or verbally attack an individual or group.",
+    confirmed: true,
+  },
+  {
+    key: "identity_attack",
+    label: "Identity Attack",
+    description:
+      "Attacks targeting individuals or groups based on their identity or personal characteristics.",
+    confirmed: true,
+  },
+  {
+    key: "polarized",
+    label: "Polarized",
+    description:
+      "Content expressing strong opposing viewpoints, divisions, or polarized perspectives.",
+    confirmed: true,
+  },
+  {
+    key: "threat_incitement_to_violence",
+    label: "Threat / Incitement to Violence",
+    description:
+      "Content containing threats or encouraging others to engage in acts of violence.",
+    confirmed: true,
+  },
+  {
+    key: "profanity_obscenity",
+    label: "Profanity / Obscenity",
+    description:
+      "Content containing vulgar, profane, or obscene expressions.",
+    confirmed: true,
+  },
+  {
+    key: "sexually_explicit",
+    label: "Sexually Explicit",
+    description:
+      "Content containing sexually explicit language or expressions.",
+    confirmed: true,
+  },
 ];
 
-export interface ToxicityCategory {
-  key: string;
-  label: string;
-  description: string | null;
-  count: number | null;
-  /** false = name only taken from the example API response; confirm against the real label set */
-  confirmed: boolean;
-}
-
-export const TOXICITY_CATEGORIES: ToxicityCategory[] = [
-  { key: 'insults', label: 'Insults', description: null, count: null, confirmed: false },
-  { key: 'identity_attack', label: 'Identity Attack', description: null, count: null, confirmed: false },
-  { key: 'profanity_obscenity', label: 'Profanity / Obscenity', description: null, count: null, confirmed: false },
+export const DATA_SPLITS = [
+  {
+    split: "Training",
+    samples: null,
+    toxic: null,
+    nonToxic: null,
+  },
+  {
+    split: "Validation",
+    samples: null,
+    toxic: null,
+    nonToxic: null,
+  },
+  {
+    split: "Testing",
+    samples: null,
+    toxic: null,
+    nonToxic: null,
+  },
 ];
 
-export const CATEGORY_DISTRIBUTION: ChartDatum[] = TOXICITY_CATEGORIES.map((c) => ({ name: c.label, value: c.count }));
-
-export interface SplitRow {
-  split: string;
-  samples: number | null;
-  toxic: number | null;
-  nonToxic: number | null;
-}
-
-export const DATA_SPLITS: SplitRow[] = [
-  { split: 'Train', samples: null, toxic: null, nonToxic: null },
-  { split: 'Validation', samples: null, toxic: null, nonToxic: null },
-  { split: 'Test', samples: null, toxic: null, nonToxic: null },
+export const METADATA_CATEGORIES = [
+  {
+    key: "ethnicity",
+    label: "Ethnicity",
+    description:
+      "Information about the ethnic background of each annotator.",
+  },
+  {
+    key: "religion",
+    label: "Religion",
+    description:
+      "Information about the religious background of each annotator.",
+  },
+  {
+    key: "disability",
+    label: "Disability",
+    description:
+      "Information indicating the disability status of each annotator.",
+  },
+  {
+    key: "lgbt",
+    label: "LGBT",
+    description:
+      "Information regarding the annotator's LGBT-related demographic background.",
+  },
+  {
+    key: "gender",
+    label: "Gender",
+    description:
+      "Gender information associated with each annotator.",
+  },
+  {
+    key: "age",
+    label: "Age",
+    description:
+      "Age information of each annotator.",
+  },
+  {
+    key: "domisili",
+    label: "Domicile",
+    description:
+      "Residential location or domicile of each annotator.",
+  },
+  {
+    key: "pendidikan terakhir",
+    label: "Education",
+    description:
+      "Highest educational attainment of each annotator.",
+  },
+  {
+    key: "status pekerjaan",
+    label: "Employment Status",
+    description:
+      "Employment or occupational background of each annotator.",
+  },
+  {
+    key: "president vote leaning",
+    label: "Presidential Voting Preference",
+    description:
+      "Reported presidential voting preference or political leaning of each annotator.",
+  },
 ];
-
-export interface MetadataCategoryInfo {
-  key: string;
-  label: string;
-  description: string;
-  /** Categories / value distribution — null until provided */
-  values: string[] | null;
-}
-
-/** Field names are taken from the example API contract. */
-export const METADATA_CATEGORIES: MetadataCategoryInfo[] = [
-  { key: 'ethnicity', label: 'Ethnicity', description: "The annotator's ethnic background.", values: null },
-  { key: 'religion', label: 'Religion', description: "The annotator's religion.", values: null },
-  { key: 'gender', label: 'Gender', description: "The annotator's gender.", values: null },
-  { key: 'age', label: 'Age range', description: "The annotator's age group.", values: null },
-  { key: 'domicile', label: 'Domicile', description: 'Where the annotator lives.', values: null },
-  { key: 'education', label: 'Education', description: "The annotator's education level.", values: null },
-];
-
-export interface MethodologyStep {
-  title: string;
-  /** null = not provided yet */
-  description: string | null;
-}
 
 export const PREPROCESSING_STEPS: MethodologyStep[] = [
-  { title: 'Step 1', description: null },
-  { title: 'Step 2', description: null },
-  { title: 'Step 3', description: null },
+  {
+    title: "Dataset Collection",
+    description:
+      "The Main Table and Annotator Table from IndoDiscourse are used as the primary data sources.",
+  },
+  {
+    title: "Data Integration",
+    description:
+      "Text annotations are connected with annotator IDs to retrieve the corresponding demographic metadata.",
+  },
+  {
+    title: "Majority Voting",
+    description:
+      "Multiple annotations for each text are aggregated to determine the final toxicity label.",
+  },
+  {
+    title: "Ambiguous Label Identification",
+    description:
+      "Samples with an equal number of Toxic and Non-Toxic votes are identified as ambiguous cases.",
+  },
+  {
+    title: "Text Cleaning and Normalization",
+    description:
+      "Minimal text preprocessing and LLM-assisted normalization are applied while preserving the original meaning and context.",
+  },
+  {
+    title: "Final Dataset Preparation",
+    description:
+      "The finalized texts, toxicity labels, and annotator metadata are prepared for model training and evaluation.",
+  },
 ];
 
 export const ANNOTATION_STEPS: MethodologyStep[] = [
-  { title: 'Step 1', description: null },
-  { title: 'Step 2', description: null },
-  { title: 'Step 3', description: null },
+  {
+    title: "Initial Annotation",
+    description:
+      "Each text is labeled by multiple annotators with either a Toxic or Non-Toxic classification.",
+  },
+  {
+    title: "Majority Voting",
+    description:
+      "The final label is determined based on the majority of votes received from the annotators.",
+  },
+  {
+    title: "Ambiguity Identification",
+    description:
+      "Samples with an equal number of Toxic and Non-Toxic votes are identified because no majority label can be established.",
+  },
+  {
+    title: "Re-annotation by Researchers",
+    description:
+      "Ambiguous samples are reviewed and re-annotated by three researchers who act as additional annotators.",
+  },
+  {
+    title: "Final Label Determination",
+    description:
+      "The additional annotations are used to establish the final labels for previously ambiguous samples.",
+  },
+  {
+    title: "Removal of Highly Ambiguous Samples",
+    description:
+      "Samples that remain highly ambiguous and cannot be assigned a reliable label are excluded from the research dataset.",
+  },
 ];

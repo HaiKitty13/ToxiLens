@@ -200,10 +200,6 @@ def distribution(series):
 
 
 def _group_series(df, col):
-    """
-    Ambil kolom demografi sebagai kategori string.
-    Kolom 'age' yang numerik otomatis dibinning supaya grafik tidak berantakan.
-    """
     s = df[col]
 
     if col.lower() == "age":
