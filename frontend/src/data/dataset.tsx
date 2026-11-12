@@ -11,15 +11,48 @@ export type DatasetStat = {
   hint: string;
 };
 
-export const DATASET_OVERVIEW = `
-This research uses IndoDiscourse, an Indonesian discourse dataset introduced by Susanto et al. (2025). The dataset was developed to support research on toxicity, hate speech, and polarization in Indonesian online communication by incorporating annotator demographic information.
 
-The dataset consists of Indonesian-language texts collected from social media platforms and online news discussions. These texts represent naturally occurring public discourse across various social, cultural, and political contexts.
+export const DATASET_OVERVIEW = [
+  <>
+    This research adopts <strong>IndoDiscourse</strong>, an Indonesian
+    discourse dataset introduced by Susanto et al. (2025), as its primary
+    data source. The dataset was developed to support research on toxicity,
+    hate speech, and polarization in Indonesian online communication by
+    incorporating annotator demographic information.
+  </>,
+  <>
+    The original dataset consists of Indonesian-language texts collected
+    from social media platforms and online news discussions. It contains
+    two main components: the <strong>Main Table</strong>, which stores
+    discourse texts and their annotation labels, and the{" "}
+    <strong>Annotator Table</strong>, which contains demographic and
+    background information about the annotators.
+  </>,
+  <>
+    However, <strong>this research does not directly use the original
+    IndoDiscourse dataset without modification</strong>. Several data
+    preparation and annotation procedures are conducted to improve the
+    consistency and reliability of the toxicity labels.
+  </>,
+  <>
+    The original annotations are first aggregated using{" "}
+    <strong>majority voting</strong>. Samples without a clear majority are
+    subsequently <strong>re-annotated by three researchers</strong>.
+    Samples that remain highly ambiguous after re-annotation are{" "}
+    <strong>excluded from the research dataset</strong>.
+  </>,
+  <>
+    The resulting dataset, which consists of finalized text, toxicity
+    labels, and integrated annotator metadata, is{" "}
+    <strong>the primary dataset used for model training and evaluation</strong>.
+  </>,
+  <>
+    Therefore, <strong>the dataset used in this research is a processed
+    and modified version of the original IndoDiscourse dataset</strong>,
+    rather than the unmodified original dataset.
+  </>,
+];
 
-IndoDiscourse consists of two main components: the Main Table, which contains discourse texts and their annotation labels, and the Annotator Table, which stores demographic and background information about the annotators involved in the labeling process.
-
-In this research, IndoDiscourse serves as the primary dataset for developing a toxicity classification model that incorporates both textual information and annotator metadata.
-`;
 
 export const DATASET_STATS: DatasetStat[] = [
   {

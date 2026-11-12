@@ -79,9 +79,11 @@ export default function DatasetDescription() {
               </span>
             </div>
 
-            <p className="whitespace-pre-line text-sm leading-7 text-muted-foreground">
-              {DATASET_OVERVIEW}
-            </p>
+            <div className="space-y-3 text-sm leading-7 text-muted-foreground">
+              {DATASET_OVERVIEW.map((paragraph, index) => (
+                <p key={index}>{paragraph}</p>
+              ))}
+            </div>
 
             <div className="mt-6 border-t pt-5">
               <p className="text-sm font-semibold">
@@ -134,6 +136,79 @@ export default function DatasetDescription() {
             ))}
           </div>
         </section>
+
+
+        {/* Dataset Modification */}
+        <section>
+          <SectionHeading
+            eyebrow="Research Dataset"
+            title="From Original to Research Dataset"
+            description="The original IndoDiscourse dataset undergoes several modifications before being used in model development."
+          />
+
+          <Card className="p-6">
+            <div className="grid gap-6 md:grid-cols-2">
+
+              {/* Original Dataset */}
+              <div className="rounded-xl border p-5">
+                <Badge tone="secondary">Original Dataset</Badge>
+
+                <h3 className="mt-3 text-lg font-bold">
+                  IndoDiscourse
+                </h3>
+
+                <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+                  The original dataset introduced by Susanto et al.
+                  (2025), containing Indonesian discourse texts,
+                  initial toxicity annotations, and annotator
+                  demographic information.
+                </p>
+
+                <ul className="mt-4 space-y-2 text-sm text-muted-foreground">
+                  <li>• Original text samples</li>
+                  <li>• Multiple annotator labels</li>
+                  <li>• Annotator demographic information</li>
+                  <li>• Initial toxicity annotations</li>
+                </ul>
+              </div>
+
+              {/* Research Dataset */}
+              <div className="rounded-xl border border-primary/40 bg-primary/5 p-5">
+                <Badge tone="primary">Used in This Research</Badge>
+
+                <h3 className="mt-3 text-lg font-bold">
+                  Processed IndoDiscourse
+                </h3>
+
+                <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+                  A modified version of the original dataset after
+                  annotation refinement, ambiguous sample handling,
+                  metadata integration, and text preprocessing.
+                </p>
+
+                <ul className="mt-4 space-y-2 text-sm text-muted-foreground">
+                  <li>• Finalized toxicity labels</li>
+                  <li>• Re-annotated ambiguous samples</li>
+                  <li>• Exclusion of highly ambiguous samples</li>
+                  <li>• Integrated annotator metadata</li>
+                  <li>• Preprocessed text data</li>
+                </ul>
+              </div>
+            </div>
+
+            <div className="mt-6 border-t pt-5">
+              <p className="text-sm leading-relaxed text-muted-foreground">
+                <strong className="text-foreground">
+                  Important distinction:
+                </strong>{" "}
+                All model training and evaluation experiments in this
+                research are conducted using the processed IndoDiscourse
+                dataset, not the unmodified original dataset.
+              </p>
+            </div>
+          </Card>
+        </section>
+
 
         {/* Label Distribution */}
         <section>
