@@ -2,6 +2,7 @@
 import { Badge, PlaceholderBadge } from '@/components/ui/Badge';
 import { BarChartCard } from '@/components/charts/BarChartCard';
 import { DonutChartCard } from '@/components/charts/DonutChartCard';
+import DatasetVisualizations from '@/components/dataset/DatasetVisualization';
 import { Card } from '@/components/ui/Card';
 import {
   PageHeader,
@@ -72,7 +73,7 @@ export default function DatasetDescription() {
           />
 
           <Card className="mb-6 p-6">
-            <div className="flex items-center gap-2">
+            <div className="pb-6 flex items-center gap-2">
               <Badge tone="primary">IndoDiscourse</Badge>
               <span className="text-xs text-muted-foreground">
                 Susanto et al. (2025)
@@ -108,7 +109,7 @@ export default function DatasetDescription() {
             </div>
           </Card>
 
-          <div className="mb-4">
+          {/* <div className="mb-4">
             <h3 className="text-sm font-semibold">
               Original Dataset Statistics
             </h3>
@@ -116,9 +117,9 @@ export default function DatasetDescription() {
               Statistics refer to the original IndoDiscourse dataset,
               not the final processed dataset used in this research.
             </p>
-          </div>
+          </div> */}
 
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {/* <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {DATASET_STATS.map((stat) => (
               <Card key={stat.id} className="p-5">
                 <p className="text-sm text-muted-foreground">
@@ -134,9 +135,71 @@ export default function DatasetDescription() {
                 </p>
               </Card>
             ))}
-          </div>
+          </div> */}
         </section>
 
+        {/* Re-annotation Explanation */}
+        <section>
+          <SectionHeading
+            eyebrow="Data Quality"
+            title="Handling Ambiguous Labels"
+            description="Additional procedures to ensure consistency and reliability in the final annotation labels."
+          />
+
+          <Card className="p-6">
+            <div className="grid gap-6 md:grid-cols-3">
+
+              <div>
+                <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-lg bg-accent text-lg font-bold text-accent-foreground">
+                  01
+                </div>
+
+                <h3 className="font-semibold">
+                  Majority Voting
+                </h3>
+
+                <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+                  Multiple annotator labels are aggregated
+                  to determine the final Toxic or Non-Toxic
+                  classification.
+                </p>
+              </div>
+
+              <div>
+                <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-lg bg-accent text-lg font-bold text-accent-foreground">
+                  02
+                </div>
+
+                <h3 className="font-semibold">
+                  Researcher Re-annotation
+                </h3>
+
+                <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+                  Samples without a majority are reviewed
+                  by three researchers, who provide additional
+                  annotations based on the complete text context.
+                </p>
+              </div>
+
+              <div>
+                <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-lg bg-accent text-lg font-bold text-accent-foreground">
+                  03
+                </div>
+
+                <h3 className="font-semibold">
+                  Ambiguous Data Removal
+                </h3>
+
+                <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+                  Samples that remain highly ambiguous after
+                  re-annotation are excluded to maintain
+                  dataset quality and label consistency.
+                </p>
+              </div>
+
+            </div>
+          </Card>
+        </section>
 
         {/* Dataset Modification */}
         <section>
@@ -209,8 +272,10 @@ export default function DatasetDescription() {
           </Card>
         </section>
 
+        <DatasetVisualizations />
 
-        {/* Label Distribution */}
+
+        {/* Label Distribution
         <section>
           <SectionHeading
             eyebrow="Distribution"
@@ -284,7 +349,7 @@ export default function DatasetDescription() {
               </Card>
             </div>
           )}
-        </section>
+        </section> */}
 
         {/* Toxicity Categories and Data Splits */}
         <section className="grid gap-8 lg:grid-cols-2">
@@ -328,7 +393,7 @@ export default function DatasetDescription() {
             </Card>
           </div>
 
-          {/* Data Splits */}
+          {/* Data Splits
           <div>
             <SectionHeading
               eyebrow="Splits"
@@ -384,7 +449,7 @@ export default function DatasetDescription() {
               Split statistics will be updated based on the final
               experimental configuration.
             </p>
-          </div>
+          </div> */}
         </section>
 
         {/* Annotator Metadata */}
@@ -433,16 +498,16 @@ export default function DatasetDescription() {
         </section>
 
         {/* Methodology */}
-        <section>
-          <SectionHeading
+        {/* <section> */}
+          {/* <SectionHeading
             eyebrow="Methodology"
             title="Data preprocessing and annotation"
             description="The procedures applied to prepare the dataset and establish reliable toxicity labels before model training."
-          />
+          /> */}
 
-          <div className="grid gap-6 lg:grid-cols-2">
+          {/* <div className="grid gap-6 lg:grid-cols-2"> */}
             {/* Preprocessing */}
-            <Card className="p-6">
+            {/* <Card className="p-6">
               <div className="mb-6">
                 <div className="mb-2 flex items-center gap-2">
                   <Badge tone="primary">Preprocessing</Badge>
@@ -459,10 +524,10 @@ export default function DatasetDescription() {
               </div>
 
               <Steps steps={PREPROCESSING_STEPS} />
-            </Card>
+            </Card> */}
 
             {/* Annotation */}
-            <Card className="p-6">
+            {/* <Card className="p-6">
               <div className="mb-6">
                 <div className="mb-2 flex items-center gap-2">
                   <Badge tone="primary">Annotation</Badge>
@@ -479,72 +544,12 @@ export default function DatasetDescription() {
               </div>
 
               <Steps steps={ANNOTATION_STEPS} />
-            </Card>
-          </div>
-        </section>
+            </Card> */}
+          {/* </div> */}
+        {/* </section> */}
 
-        {/* Re-annotation Explanation */}
-        <section>
-          <SectionHeading
-            eyebrow="Data Quality"
-            title="Handling Ambiguous Labels"
-            description="Additional procedures to ensure consistency and reliability in the final annotation labels."
-          />
-
-          <Card className="p-6">
-            <div className="grid gap-6 md:grid-cols-3">
-
-              <div>
-                <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-lg bg-accent text-lg font-bold text-accent-foreground">
-                  01
-                </div>
-
-                <h3 className="font-semibold">
-                  Majority Voting
-                </h3>
-
-                <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-                  Multiple annotator labels are aggregated
-                  to determine the final Toxic or Non-Toxic
-                  classification.
-                </p>
-              </div>
-
-              <div>
-                <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-lg bg-accent text-lg font-bold text-accent-foreground">
-                  02
-                </div>
-
-                <h3 className="font-semibold">
-                  Researcher Re-annotation
-                </h3>
-
-                <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-                  Samples without a majority are reviewed
-                  by three researchers, who provide additional
-                  annotations based on the complete text context.
-                </p>
-              </div>
-
-              <div>
-                <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-lg bg-accent text-lg font-bold text-accent-foreground">
-                  03
-                </div>
-
-                <h3 className="font-semibold">
-                  Ambiguous Data Removal
-                </h3>
-
-                <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-                  Samples that remain highly ambiguous after
-                  re-annotation are excluded to maintain
-                  dataset quality and label consistency.
-                </p>
-              </div>
-
-            </div>
-          </Card>
-        </section>
+        
+        
 
       </div>
     </>

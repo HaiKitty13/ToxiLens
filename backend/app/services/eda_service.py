@@ -1,22 +1,3 @@
-"""
-EDA service untuk penelitian:
-"Klasifikasi Ujaran Kebencian Berbahasa Indonesia Menggunakan Model BERT
- dengan Analisis Bias Anotator pada Dataset IndoDiscourse"
-
-Struktur EDA (urutan tab di frontend):
-  1. Overview & kesiapan data training   -> get_eda_overview
-  2. Distribusi toxicity & kategori      -> get_eda_toxicity, get_eda_categories
-  3. Karakteristik teks                  -> get_eda_text_length, get_eda_top_words
-  4. Topik vs toxicity                   -> get_eda_topics
-  5. Agreement antar anotator            -> get_eda_agreement
-  6. Korelasi antar label                -> get_eda_label_correlation
-  7. Demografi anotator                  -> get_eda_demographics
-  8. BIAS ANOTATOR (inti penelitian)     -> get_eda_demographics_toxicity,
-                                            get_eda_demographic_topic,
-                                            get_eda_annotators
-  9. Preview data                        -> get_eda_annotations
-"""
-
 import ast
 import re
 from collections import Counter
@@ -42,7 +23,6 @@ TARGET_COLUMN = "toxicity"
 
 # Kategori ujaran kebencian (sub-label)
 CATEGORY_COLUMNS = [
-    "polarized",
     "profanity_obscenity",
     "threat_incitement_to_violence",
     "insults",
@@ -489,12 +469,6 @@ def _build_annotation_with_consensus():
 
 @lru_cache(maxsize=1)
 def _build_tweet_level_dataset():
-    """
-    Satu baris = satu tweet.
-    Label = majority vote; tie -> NaN (status 'tie').
-
-    status: agreement | majority | tie | single_vote | no_votes
-    """
     df = _build_annotation_dataset()
     cols = [c for c in ANNOTATION_COLUMNS if c in df.columns]
 
@@ -511,15 +485,19 @@ def _build_tweet_level_dataset():
         n1 = grouped[c].sum()
         m = grouped[c].count()
 
-        label = pd.Series(np.nan, index=base.index)
-        label[n1 * 2 > m] = 1.0
-        label[n1 * 2 < m] = 0.0
-        label[m == 0] = np.nan
+        # Majority voting: >= 0.5 menjadi 1
+        label = pd.Series(np.nan, index=base.index, dtype=float)
+        valid = m > 0
+        label.loc[valid] = (
+            n1.loc[valid] / m.loc[valid] >= 0.5
+        ).astype(float)
 
-        status = pd.Series("majority", index=base.index)
-        status[(n1 == 0) | (n1 == m)] = "agreement"
+        # Status tanpa kategori tie
+        status = pd.Series("majority", index=base.index, dtype=object)
+
+        status[(n1 == 0) & valid] = "agreement"
+        status[(n1 == m) & valid] = "agreement"
         status[m == 1] = "single_vote"
-        status[(m > 1) & (n1 * 2 == m)] = "tie"
         status[m == 0] = "no_votes"
 
         base[c] = label
@@ -610,7 +588,6 @@ def get_eda_overview():
 # =========================================================
 # 4. DISTRIBUSI TOXICITY
 # =========================================================
-
 def get_eda_toxicity():
     df = _build_annotation_dataset()
     tw = _build_tweet_level_dataset()
@@ -618,6 +595,7 @@ def get_eda_toxicity():
     def build(series):
         counts = series.dropna().value_counts()
         total = int(counts.sum())
+
         return [
             {
                 "label": get_binary_label_name(v),
@@ -628,23 +606,17 @@ def get_eda_toxicity():
             for v in (0, 1)
         ]
 
-    status_counts = tw[f"{TARGET_COLUMN}_status"].value_counts()
-
     return {
         "annotation_level": {
             "total_votes": int(df[TARGET_COLUMN].notna().sum()),
             "distribution": build(df[TARGET_COLUMN]),
         },
         "tweet_level": {
-            "total_tweets": len(tw),
+            "total_tweets": int(tw[TARGET_COLUMN].notna().sum()),
             "distribution": build(tw[TARGET_COLUMN]),
-            "tie_count": int(status_counts.get("tie", 0)),
-            "no_vote_count": int(status_counts.get("no_votes", 0)),
-            "status_breakdown": [
-                {"status": str(k), "count": int(v)} for k, v in status_counts.items()
-            ],
         },
     }
+
 
 
 # =========================================================
@@ -676,6 +648,9 @@ def get_eda_categories():
     df = _build_annotation_dataset()
     tw = _build_tweet_level_dataset()
 
+    # Stage 2 hanya menggunakan tweet yang toxic
+    tw = tw[tw[TARGET_COLUMN] == 1].copy()
+
     categories = []
     for col in CATEGORY_COLUMNS:
         if col not in df.columns:
@@ -683,16 +658,18 @@ def get_eda_categories():
 
         item = _label_summary(df, tw, col)
 
-        # Dari tweet yang positif kategori ini, berapa % yang toxic?
-        sub = tw[tw[col] == 1][TARGET_COLUMN].dropna()
-        item["toxic_given_category"] = _pct(int((sub == 1).sum()), len(sub))
         categories.append(item)
 
     flags = [
-        _label_summary(df, tw, col) for col in FLAG_COLUMNS if col in df.columns
+        _label_summary(df, tw, col)
+        for col in FLAG_COLUMNS
+        if col in df.columns
     ]
 
-    return {"categories": categories, "flags": flags}
+    return {
+        "categories": categories,
+        "flags": flags
+    }
 
 
 # =========================================================
