@@ -1,6 +1,5 @@
 import { Navigate, Route, Routes } from 'react-router-dom';
 import { Layout } from '@/components/layout/Layout';
-import ApiDocumentation from '@/pages/ApiDocumentation';
 import DatasetDescription from '@/pages/DatasetDescription';
 import ModelDescription from '@/pages/ModelDescription';
 import ModelPrediction from '@/pages/ModelPrediction';
