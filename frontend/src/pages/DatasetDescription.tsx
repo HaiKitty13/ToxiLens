@@ -269,7 +269,7 @@ export default function DatasetDescription() {
 
               {/* Original Dataset */}
               <div className="rounded-xl border p-5">
-                <Badge tone="secondary">Original Dataset</Badge>
+                <Badge>Original Dataset</Badge>
 
                 <h3 className="mt-3 text-lg font-bold">
                   IndoDiscourse
@@ -349,7 +349,7 @@ export default function DatasetDescription() {
                   </p>
                 </div>
 
-                <Badge tone="secondary">
+                <Badge>
                   {MAIN_TABLE_FEATURES.length} Features
                 </Badge>
               </div>
@@ -369,7 +369,7 @@ export default function DatasetDescription() {
                   </p>
                 </div>
 
-                <Badge tone="secondary">
+                <Badge>
                   {ANNOTATOR_TABLE_FEATURES.length} Features
                 </Badge>
               </div>
