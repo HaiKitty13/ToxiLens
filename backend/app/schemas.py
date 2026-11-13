@@ -13,6 +13,49 @@ class AnnotatorMetadata(BaseModel):
     status_pekerjaan: str
     president_vote_leaning: str
 
+class AnnotatorMetadataDomicile(BaseModel):
+    domisili: Optional[str] = None
+
+
+class PredictionRequest(BaseModel):
+    text: str = Field(..., min_length=1)
+    mode: Literal["metadata", "text_only"] = "metadata"
+    metadata: Optional[AnnotatorMetadata] = None
+
+
+class Stage1Request(BaseModel):
+    text: str = Field(..., min_length=1)
+    mode: Literal["metadata", "text_only"] = "metadata"
+    metadata: Optional[AnnotatorMetadata] = None
+
+
+class Stage2Request(BaseModel):
+    text: str = Field(..., min_length=1)
+    mode: Literal["metadata", "text_only"] = "metadata"
+    metadata: Optional[AnnotatorMetadata] = None
+
+
+class Stage1Response(BaseModel):
+    text: str
+    mode: str
+    prediction: str
+    confidence: float
+    probabilities: dict
+
+
+class Stage2Response(BaseModel):
+    text: str
+    mode: str
+    predictions: list
+    probabilities: dict
+
+
+class FullPredictionResponse(BaseModel):
+    text: str
+    mode: str
+    stage1: dict
+    stage2: Optional[dict] = None
+
 
 class TextOnlyPredictionRequest(BaseModel):
     text: str
@@ -64,46 +107,3 @@ class MetadataFullPredictionRequest(BaseModel):
             }
         }
     )
-
-class AnnotatorMetadataDomicile(BaseModel):
-    domisili: Optional[str] = None
-
-
-class PredictionRequest(BaseModel):
-    text: str = Field(..., min_length=1)
-    mode: Literal["metadata", "text_only"] = "metadata"
-    metadata: Optional[AnnotatorMetadata] = None
-
-
-class Stage1Request(BaseModel):
-    text: str = Field(..., min_length=1)
-    mode: Literal["metadata", "text_only"] = "metadata"
-    metadata: Optional[AnnotatorMetadata] = None
-
-
-class Stage2Request(BaseModel):
-    text: str = Field(..., min_length=1)
-    mode: Literal["metadata", "text_only"] = "metadata"
-    metadata: Optional[AnnotatorMetadata] = None
-
-
-class Stage1Response(BaseModel):
-    text: str
-    mode: str
-    prediction: str
-    confidence: float
-    probabilities: dict
-
-
-class Stage2Response(BaseModel):
-    text: str
-    mode: str
-    predictions: list
-    probabilities: dict
-
-
-class FullPredictionResponse(BaseModel):
-    text: str
-    mode: str
-    stage1: dict
-    stage2: Optional[dict] = None
