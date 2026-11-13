@@ -39,10 +39,6 @@ export default function ResearchDescription() {
       />
 
       <div className="container space-y-20 py-12 sm:py-16">
-        <PlaceholderNotice>
-          <strong>Draft content.</strong> This page describes the research at a high level from the project brief. It contains no results or conclusions —
-          edit <code className="rounded bg-muted px-1 font-mono text-xs">src/data/research.ts</code> with the final wording.
-        </PlaceholderNotice>
 
         <section>
           <SectionHeading eyebrow="Background" title="Research background" />
