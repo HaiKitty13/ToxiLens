@@ -136,18 +136,18 @@ export default function ModelDescription() {
               </Card>
             ))}
           </div>
-          <div className="mt-4">
+          {/* <div className="mt-4">
             <PlaceholderNotice>
               <PlaceholderBadge>To be confirmed</PlaceholderBadge> <span className="ml-1">{METADATA_INCORPORATION.tbd}</span>
             </PlaceholderNotice>
-          </div>
+          </div> */}
         </section>
 
         {/* Encoder */}
         <section>
           <SectionHeading
             eyebrow="Model architecture"
-            title="IndoBERT / IndoBERTweet"
+            title="IndoBERTweet and NusaBERT"
             description="Both are transformer encoders in the BERT family, specialised for Indonesian."
           />
           <div className="grid gap-6 md:grid-cols-2">
@@ -172,11 +172,11 @@ export default function ModelDescription() {
             </ol>
           </Card>
 
-          <div className="mt-4">
+          {/* <div className="mt-4">
             <PlaceholderNotice>
               <PlaceholderBadge>To be confirmed</PlaceholderBadge> <span className="ml-1">{CHECKPOINT_TBD}</span>
             </PlaceholderNotice>
-          </div>
+          </div> */}
         </section>
       </div>
     </>

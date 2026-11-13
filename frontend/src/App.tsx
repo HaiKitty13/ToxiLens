@@ -10,10 +10,10 @@ export default function App() {
   return (
     <Routes>
       <Route element={<Layout />}>
-        <Route index element={<ModelPrediction />} />
+        <Route index element={<ResearchDescription />} />
         <Route path="model" element={<ModelDescription />} />
         <Route path="dataset" element={<DatasetDescription />} />
-        <Route path="research" element={<ResearchDescription />} />
+        <Route path="model-prediction" element={<ModelPrediction />} />
         {/* <Route path="api" element={<ApiDocumentation />} /> */}
         <Route path="*" element={<Navigate to="/" replace />} />
       </Route>

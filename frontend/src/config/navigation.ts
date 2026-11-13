@@ -8,9 +8,8 @@ export interface NavItem {
 }
 
 export const NAV_ITEMS: NavItem[] = [
-  { to: '/', label: 'Model Prediction', icon: ScanSearch },
+  { to: '/', label: 'Research Description', icon: BookOpen },
+  { to: '/model-prediction', label: 'Model Prediction', icon: ScanSearch },
   { to: '/model', label: 'Model Description', icon: Cpu },
   { to: '/dataset', label: 'Dataset Description', icon: Database },
-  { to: '/research', label: 'Research Description', icon: BookOpen },
-  { to: '/api', label: 'API Documentation', icon: Terminal },
 ];

@@ -3,12 +3,17 @@ import { Badge, PlaceholderBadge } from '@/components/ui/Badge';
 import { BarChartCard } from '@/components/charts/BarChartCard';
 import { DonutChartCard } from '@/components/charts/DonutChartCard';
 import DatasetVisualizations from '@/components/dataset/DatasetVisualization';
+import type { DatasetFeature } from "@/data/dataset-features";
 import { Card } from '@/components/ui/Card';
 import {
   PageHeader,
   PlaceholderNotice,
   SectionHeading,
 } from '@/components/ui/PageHeader';
+import {
+  MAIN_TABLE_FEATURES,
+  ANNOTATOR_TABLE_FEATURES,
+} from "@/data/dataset-features";
 
 import {
   ANNOTATION_STEPS,
@@ -50,6 +55,56 @@ function Steps({ steps }: { steps: MethodologyStep[] }) {
         </li>
       ))}
     </ol>
+  );
+}
+
+function FeatureTable({
+  features,
+}: {
+  features: DatasetFeature[];
+}) {
+  return (
+    <Card className="overflow-hidden">
+      <div className="overflow-x-auto">
+        <table className="w-full min-w-[640px] text-left text-sm">
+          <thead>
+            <tr className="border-b bg-muted/40">
+              <th className="w-[30%] px-5 py-4 font-semibold">
+                Feature
+              </th>
+              <th className="px-5 py-4 font-semibold">
+                Description
+              </th>
+            </tr>
+          </thead>
+
+          <tbody className="divide-y">
+            {features.map((feature) => (
+              <tr
+                key={feature.name}
+                className="transition-colors hover:bg-muted/30"
+              >
+                <td className="px-5 py-4 align-top">
+                  <code className="break-all rounded bg-muted px-2 py-1 font-mono text-xs font-medium">
+                    {feature.name}
+                  </code>
+                </td>
+
+                <td className="px-5 py-4 align-top text-sm leading-relaxed text-muted-foreground">
+                  {feature.description}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      <div className="border-t bg-muted/20 px-5 py-3">
+        <p className="text-xs text-muted-foreground">
+          Showing {features.length} dataset features.
+        </p>
+      </div>
+    </Card>
   );
 }
 
@@ -272,6 +327,60 @@ export default function DatasetDescription() {
           </Card>
         </section>
 
+
+        {/* Dataset Features */}
+        <section>
+          <SectionHeading
+            eyebrow="Dataset Structure"
+            title="Dataset Features"
+            description="An overview of the attributes available in the IndoDiscourse dataset, covering text-level information, toxicity annotations, and annotator demographics."
+          />
+
+          <div className="space-y-8">
+            {/* Main Table */}
+            <div>
+              <div className="mb-4 flex flex-wrap items-center justify-between gap-2">
+                <div>
+                  <h3 className="text-base font-semibold">
+                    Main Table
+                  </h3>
+                  <p className="mt-1 text-sm text-muted-foreground">
+                    Text-level attributes and annotation labels.
+                  </p>
+                </div>
+
+                <Badge tone="secondary">
+                  {MAIN_TABLE_FEATURES.length} Features
+                </Badge>
+              </div>
+
+              <FeatureTable features={MAIN_TABLE_FEATURES} />
+            </div>
+
+            {/* Annotator Table */}
+            <div>
+              <div className="mb-4 flex flex-wrap items-center justify-between gap-2">
+                <div>
+                  <h3 className="text-base font-semibold">
+                    Annotator Table
+                  </h3>
+                  <p className="mt-1 text-sm text-muted-foreground">
+                    Demographic and background attributes of individual annotators.
+                  </p>
+                </div>
+
+                <Badge tone="secondary">
+                  {ANNOTATOR_TABLE_FEATURES.length} Features
+                </Badge>
+              </div>
+
+              <FeatureTable features={ANNOTATOR_TABLE_FEATURES} />
+            </div>
+          </div>
+
+        </section>
+
+
         <DatasetVisualizations />
 
 
@@ -352,10 +461,10 @@ export default function DatasetDescription() {
         </section> */}
 
         {/* Toxicity Categories and Data Splits */}
-        <section className="grid gap-8 lg:grid-cols-2">
+        {/* <section className="grid gap-8 lg:grid-cols-2"> */}
 
           {/* Stage 2 Categories */}
-          <div>
+          {/* <div>
             <SectionHeading
               eyebrow="Stage 2"
               title="Toxicity Categories"
@@ -391,7 +500,7 @@ export default function DatasetDescription() {
                 </div>
               ))}
             </Card>
-          </div>
+          </div> */}
 
           {/* Data Splits
           <div>
@@ -450,10 +559,10 @@ export default function DatasetDescription() {
               experimental configuration.
             </p>
           </div> */}
-        </section>
+        {/* </section> */}
 
         {/* Annotator Metadata */}
-        <section>
+        {/* <section>
           <SectionHeading
             eyebrow="Annotator Metadata"
             title="Who labeled the data?"
@@ -495,7 +604,7 @@ export default function DatasetDescription() {
               </Card>
             ))}
           </div>
-        </section>
+        </section> */}
 
         {/* Methodology */}
         {/* <section> */}

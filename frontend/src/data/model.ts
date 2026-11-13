@@ -99,14 +99,14 @@ export interface ArchitectureCard {
   body: string;
 }
 
-export const ARCHITECTURE_CARDS: ArchitectureCard[] = [
-  {
-    title: 'IndoBERT',
-    body: 'A BERT-based encoder pre-trained on large Indonesian text corpora, giving it strong general knowledge of Indonesian language.',
-  },
+export const ARCHITECTURE_CARDS = [
   {
     title: 'IndoBERTweet',
-    body: 'An Indonesian BERT model further pre-trained on Indonesian Twitter data, which suits informal, noisy social media text.',
+    body: 'A pretrained Indonesian language model based on the BERT architecture, designed to process informal language and social media text.',
+  },
+  {
+    title: 'NusaBERT',
+    body: 'A pretrained Indonesian language model used as an alternative encoder for Indonesian text classification.',
   },
 ];
 

@@ -153,7 +153,7 @@ export default function DatasetVisualizations() {
         />
 
         {toxicityData.length > 0 ? (
-          <div className="grid gap-6 lg:grid-cols-2">
+          <div className="grid gap-6">
             <DonutChartCard
               title="Toxic vs. Non-Toxic"
               description={`${totalValidTweets.toLocaleString()} tweets with valid majority-vote labels.`}
